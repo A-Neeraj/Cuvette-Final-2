@@ -1,29 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash, FaShareAlt } from 'react-icons/fa';
 import styles from './Analytics.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
-import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
+import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog'; // Import CreateQuestionsDialog
+import { getQuizList } from '../../services/quizService'; // New service for getting the quiz list
 
 const Analytics = () => {
   const navigate = useNavigate();
+  const [quizData, setQuizData] = useState([]);
+  const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
+  const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false); // New state for CreateQuestionsDialog
+
+  useEffect(() => {
+    updateQuizList(); // Update quiz list when the analytics page is loaded
+  }, []);
+
+  const updateQuizList = () => {
+    const quizzes = getQuizList(); // Fetch updated quiz list
+    setQuizData(quizzes);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     navigate('/');
   };
 
-  // Example data, replace this with actual data fetched from your backend
-  const [quizData, setQuizData] = useState([
-    { id: 1, name: "Quiz 1", createdOn: "2024-08-21", impressions: 150 },
-    { id: 2, name: "Quiz 2", createdOn: "2024-08-22", impressions: 120 },
-    { id: 3, name: "Quiz 3", createdOn: "2024-08-23", impressions: 200 },
-  ]);
-
-  const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
-  const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false);
-
-  // Create Quiz Dialog Box
   const handleOpenCreateQuiz = () => {
     setShowCreateQuizDialog(true);
   };
@@ -33,31 +35,36 @@ const Analytics = () => {
   };
 
   const handleContinueToQuestions = () => {
-    setShowCreateQuizDialog(false);
-    setShowCreateQuestionsDialog(true);
+    setShowCreateQuizDialog(false); // Close CreateQuizDialog
+    setShowCreateQuestionsDialog(true); // Open CreateQuestionsDialog
+    console.log('Continuing to the questions page...');
   };
 
   const handleCloseCreateQuestions = () => {
-    setShowCreateQuestionsDialog(false);
+    setShowCreateQuestionsDialog(false); // Close CreateQuestionsDialog
+    updateQuizList(); // Update quiz list after questions are created
+  };
+
+  const handleShareQuiz = (quizLink) => {
+    navigator.clipboard.writeText(quizLink);
+    alert('Quiz link copied to clipboard');
   };
 
   const [showDialog, setShowDialog] = useState(false);
   const [selectedQuizId, setSelectedQuizId] = useState(null);
 
-  //Delete Dialog Box
   const handleDeleteClick = (id) => {
     setSelectedQuizId(id);
     setShowDialog(true);
   };
 
   const confirmDelete = () => {
-    // Delete the quiz
     setQuizData(quizData.filter(quiz => quiz.id !== selectedQuizId));
-    setShowDialog(false); // Hide the dialog after deleting
+    setShowDialog(false);
   };
 
   const cancelDelete = () => {
-    setShowDialog(false); // Hide the dialog without deleting
+    setShowDialog(false);
   };
 
   return (
@@ -68,7 +75,15 @@ const Analytics = () => {
           <ul className={styles.navList}>
             <li className={styles.navItem}><Link to="/dashboard" className={styles.navLink}>Dashboard</Link></li>
             <li className={styles.navItem}><Link to="/analytics" className={styles.navLink}>Analytics</Link></li>
-            <li className={styles.navItem}><button className={styles.navLink} onClick={handleOpenCreateQuiz} style={{border: "None", backgroundColor: "#FFFFFF", font: "Franklin Gothic Medium", color: "#474444", fontWeight: "bolder" }}>Create Quiz</button></li>
+            <li className={styles.navItem}>
+              <button 
+                className={styles.navLink} 
+                onClick={handleOpenCreateQuiz} 
+                style={{border: "none", backgroundColor: "#FFFFFF", font: "Franklin Gothic Medium", color: "#474444", fontWeight: "bolder" }}
+              >
+                Create Quiz
+              </button>
+            </li>
           </ul>
         </nav>
         <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
@@ -84,7 +99,7 @@ const Analytics = () => {
               <th>Created On</th>
               <th>Impressions</th>
               <th>Functions</th>
-              <th></th> {/* Empty column for spacing */}
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -97,9 +112,9 @@ const Analytics = () => {
                 <td>
                   <button className={`${styles.iconButton} ${styles.editButton}`}><FaEdit /></button>
                   <button className={`${styles.iconButton} ${styles.deleteButton}`} onClick={() => handleDeleteClick(quiz.id)}><FaTrash /></button>
-                  <button className={`${styles.iconButton} ${styles.shareButton}`}><FaShareAlt /></button>
+                  <button className={`${styles.iconButton} ${styles.shareButton}`} onClick={() => handleShareQuiz(quiz.link)}><FaShareAlt /></button>
                 </td>
-                <td></td> {/* Empty column for spacing */}
+                <td></td>
               </tr>
             ))}
           </tbody>
@@ -120,12 +135,14 @@ const Analytics = () => {
         {showCreateQuizDialog && (
           <CreateQuizDialog 
             onClose={handleCloseCreateQuiz} 
-            onContinue={handleContinueToQuestions}  // Pass onContinue prop here
+            onContinue={handleContinueToQuestions} // Pass the onContinue function
           />
         )}
 
         {showCreateQuestionsDialog && (
-          <CreateQuestionsDialog onClose={handleCloseCreateQuestions} />
+          <CreateQuestionsDialog 
+            onClose={handleCloseCreateQuestions} // Handle closing the CreateQuestionsDialog
+          />
         )}
       </div>
     </div>

@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
 import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
+import { getQuizStats } from '../../services/quizService'; // New service for getting quiz stats
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
   const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false);
+  const [quizStats, setQuizStats] = useState({ quizzes: 0, questions: 0, impressions: 0 });
+
+  useEffect(() => {
+    updateStats(); // Update stats when the dashboard is loaded
+  }, []);
+
+  const updateStats = () => {
+    const stats = getQuizStats(); // Fetch updated quiz stats
+    setQuizStats(stats);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
@@ -30,6 +41,7 @@ const Dashboard = () => {
 
   const handleCloseCreateQuestions = () => {
     setShowCreateQuestionsDialog(false);
+    updateStats(); // Update stats when the quiz creation process is completed
   };
 
   return (
@@ -51,9 +63,9 @@ const Dashboard = () => {
       </div>
       <div className={styles.mainContent}>
         <div className={styles.cardsContainer}>
-          <div className={`${styles.card} ${styles.quizzesCard}`}>X Quizzes Created</div>
-          <div className={`${styles.card} ${styles.questionsCard}`}>X Questions Created</div>
-          <div className={`${styles.card} ${styles.impressionsCard}`}>X Total Impressions</div>
+          <div className={`${styles.card} ${styles.quizzesCard}`}>{quizStats.quizzes} Quizzes Created</div>
+          <div className={`${styles.card} ${styles.questionsCard}`}>{quizStats.questions} Questions Created</div>
+          <div className={`${styles.card} ${styles.impressionsCard}`}>{quizStats.impressions} Total Impressions</div>
         </div>
         <h3 className={styles.trendingHeading}>Trending Quizzes</h3>
         <div className={styles.trendingQuizzes}>
