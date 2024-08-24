@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
 import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
-import { getQuizStats } from '../../services/quizService'; // Service for getting quiz stats
+import { getQuizStats } from '../../services/quizService';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -13,11 +13,11 @@ const Dashboard = () => {
   const [quizStats, setQuizStats] = useState({ quizzes: 0, questions: 0, impressions: 0 });
   
   useEffect(() => {
-    updateStats(); // Update stats when the dashboard is loaded
+    updateStats();
   }, []);
 
   const updateStats = () => {
-    const stats = getQuizStats(); // Fetch updated quiz stats
+    const stats = getQuizStats();
     setQuizStats(stats);
   };
 
@@ -34,14 +34,17 @@ const Dashboard = () => {
     setShowCreateQuizDialog(false);
   };
 
-  const handleContinueToQuestions = () => {
+  const handleContinueToQuestions = (quizName, quizType) => {
     setShowCreateQuizDialog(false);
     setShowCreateQuestionsDialog(true);
+    // Pass quizName and quizType to CreateQuestionsDialog or use as needed
+    console.log('Quiz Name:', quizName);
+    console.log('Quiz Type:', quizType);
   };
 
   const handleCloseCreateQuestions = () => {
     setShowCreateQuestionsDialog(false);
-    updateStats(); // Update stats when the quiz creation process is completed
+    updateStats();
   };
 
   return (
@@ -76,7 +79,7 @@ const Dashboard = () => {
       {showCreateQuizDialog && (
         <CreateQuizDialog 
           onClose={handleCloseCreateQuiz} 
-          onContinue={handleContinueToQuestions}  // Pass onContinue prop here
+          onContinue={handleContinueToQuestions} // Pass quizName and quizType
         />
       )}
 

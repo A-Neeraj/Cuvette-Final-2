@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './CreateQuizDialog.module.css';
 
-const CreateQuizDialog = ({ onClose, onContinue }) => {  // onContinue is added as a prop
+const CreateQuizDialog = ({ onClose, onContinue }) => {
   const [quizName, setQuizName] = useState('');
   const [quizType, setQuizType] = useState('');
 
@@ -11,10 +11,7 @@ const CreateQuizDialog = ({ onClose, onContinue }) => {  // onContinue is added 
 
   const handleContinue = () => {
     if (quizName && quizType) {
-      // Handle the logic to create the quiz here
-      console.log("Quiz Name:", quizName);
-      console.log("Quiz Type:", quizType);
-      onContinue(); // Open the questions dialog
+      onContinue(quizName, quizType); // Pass quizName and quizType to onContinue
     } else {
       alert("Please enter a quiz name and select a quiz type.");
     }
@@ -59,3 +56,4 @@ const CreateQuizDialog = ({ onClose, onContinue }) => {  // onContinue is added 
 };
 
 export default CreateQuizDialog;
+ 

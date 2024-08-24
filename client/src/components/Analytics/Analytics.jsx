@@ -3,22 +3,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash, FaShareAlt } from 'react-icons/fa';
 import styles from './Analytics.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
-import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog'; // Import CreateQuestionsDialog
-import { getQuizList } from '../../services/quizService'; // New service for getting the quiz list
+import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
+import { getQuizList, deleteQuiz } from '../../services/quizService';
 
 const Analytics = () => {
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState([]);
   const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
-  const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false); // New state for CreateQuestionsDialog
+  const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false);
 
   useEffect(() => {
-    updateQuizList(); // Update quiz list when the analytics page is loaded
+    updateQuizList();
   }, []);
 
   const updateQuizList = () => {
-    const quizzes = getQuizList(); // Fetch updated quiz list
-    setQuizData(quizzes);
+    const quizzes = getQuizList(); // Fetch the latest quizzes list
+    setQuizData(quizzes); // Update the quizData state
   };
 
   const handleLogout = () => {
@@ -34,15 +34,15 @@ const Analytics = () => {
     setShowCreateQuizDialog(false);
   };
 
-  const handleContinueToQuestions = () => {
-    setShowCreateQuizDialog(false); // Close CreateQuizDialog
-    setShowCreateQuestionsDialog(true); // Open CreateQuestionsDialog
-    console.log('Continuing to the questions page...');
+  const handleContinueToQuestions = (quizName, quizType) => {
+    setShowCreateQuizDialog(false);
+    setShowCreateQuestionsDialog(true);
+    console.log('Continuing to the questions page with:', quizName, quizType);
   };
 
   const handleCloseCreateQuestions = () => {
-    setShowCreateQuestionsDialog(false); // Close CreateQuestionsDialog
-    updateQuizList(); // Update quiz list after questions are created
+    setShowCreateQuestionsDialog(false);
+    updateQuizList(); // Refresh the quiz list after creating questions
   };
 
   const handleShareQuiz = (quizLink) => {
@@ -59,7 +59,8 @@ const Analytics = () => {
   };
 
   const confirmDelete = () => {
-    setQuizData(quizData.filter(quiz => quiz.id !== selectedQuizId));
+    deleteQuiz(selectedQuizId); // Delete quiz from localStorage
+    updateQuizList(); // Update the quiz list after deletion
     setShowDialog(false);
   };
 
@@ -135,7 +136,7 @@ const Analytics = () => {
         {showCreateQuizDialog && (
           <CreateQuizDialog 
             onClose={handleCloseCreateQuiz} 
-            onContinue={handleContinueToQuestions} // Pass the onContinue function
+            onContinue={handleContinueToQuestions} // Pass the quizName and quizType
           />
         )}
 
