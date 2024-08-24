@@ -1,0 +1,204 @@
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialogBox {
+  background-color: #FFFFFF;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 500px;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.maxQuestions {
+  font-size: 0.9rem;
+  color: #9F9F9F;
+  font-weight: bold;
+}
+
+.questionNav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.questionButton,
+.addQuestionButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background-color: #FFFFFF;
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #9F9F9F;
+}
+
+.activeButton {
+  background-color: #60B84B;
+  color: #FFFFFF;
+}
+
+.questionInput {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: black;
+}
+
+.optionTypeContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.optionTypeLabel {
+  font-size: 1rem;
+  color: #9F9F9F;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.optionTypeRadio {
+  margin-right: 1rem; 
+  color: #9F9F9F;
+}
+
+.optionTypeRadio input {
+  margin-right: 0.5rem;  
+}
+
+.optionsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.optionsLeft {
+  width: 60%;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.optionInput {
+  flex: 1;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.correctOption {
+  background-color: #60B84B;
+  color: #FFFFFF;
+}
+
+.deleteIcon {
+  cursor: pointer;
+  color: #ff4b4b;
+}
+
+.addOptionButton {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addOptionButton:hover {
+  background-color: #e0e0e0;
+}
+
+.optionsRight {
+  width: 30%;
+  text-align: center;
+}
+
+.optionsRight h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #9F9F9F;
+  font-weight: bold;
+}
+
+.timerButton {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.activeTimerButton {
+  background-color: #ff4b4b;
+  color: white;
+}
+
+.dialogButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.cancelButton,
+.createQuizButton {
+  flex: 1;
+  font-weight: bolder;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton {
+  background-color: #FFFFFF;
+  color: #474444;
+  border: 1px solid #ddd;
+  margin-right: 1rem;
+}
+
+.cancelButton:hover {
+  background-color: #f7f7f7;
+}
+
+.createQuizButton {
+  background-color: #60B84B;
+  color: white;
+  border: none;
+}
+
+.createQuizButton:hover {
+  background-color: #4ea33d;
+}

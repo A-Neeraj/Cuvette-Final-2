@@ -1,0 +1,188 @@
+.analyticsContainer {
+    display: flex;
+    height: 100vh;
+    background-color: #ededed;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    color: #474444;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    font-size: 2.5rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #474444;
+    font-weight: bolder;
+  }
+  
+  .nav {
+    margin-top: 2rem;
+  }
+  
+  .navList {
+    list-style: none;
+  }
+  
+  .navItem {
+    margin-bottom: 1.5rem;
+    padding: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5rem;
+  }
+  
+  .navLink {
+    color: #474444;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .navItem:hover {
+    background-color: #f7f7f7;
+    box-shadow: 0.5px 0.5px 8px 5px #888888;
+  }
+  
+  .logoutButton {
+    background-color: #ffffff;
+    color: #474444;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+  
+  .logoutButton:hover {
+    background-color: #f7f7f7;
+    box-shadow: 1px 1px 8px 5px #888888;
+  }
+  
+  .mainContent {
+    flex-grow: 1;
+    padding: 2rem;
+    color: #474444;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+  
+  .heading {
+    color: #5076ff;
+    margin-bottom: 1.5rem;
+    font-size: 3rem;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+
+  .table th{
+    background-color: #5076FF;
+    color: white;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .table tbody tr:nth-child(odd) {
+    background-color: #ededed;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #b3c4ff;
+  }
+  
+  .iconButton {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+
+  .editButton {
+    color: #854cff; 
+  }
+  
+  .deleteButton {
+    color: red; 
+  }
+  
+  .shareButton {
+    color: #60b84b;
+  }
+  
+  .iconButton:hover {
+    color: #007bff;
+  }
+  
+  .dialogOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Dialog box */
+  .dialogBox {
+    background-color: #FFFFFF;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Dialog buttons container */
+  .dialogButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  
+  /* Confirm delete button */
+  .confirmButton {
+    background-color: #FF4B4B;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Cancel button */
+  .cancelButton {
+    background-color: #FFFFFF;
+    color: #474444;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Button hover effects */
+  .confirmButton:hover {
+    background-color: #e04a4a;
+  }
+  
+  .cancelButton:hover {
+    background-color: #f7f7f7;
+  }

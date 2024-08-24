@@ -1,0 +1,104 @@
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialogBox {
+  background-color: #FFFFFF;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 350px; /* Increased width */
+}
+
+.quizNameInput {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: black;
+}
+
+.quizTypeContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.quizTypeLabel {
+  font-size: 1rem;
+  color: #474444;
+  font-weight: bold;
+  margin-right: 10px; /* Space between label and buttons */
+}
+
+.quizTypeButtons {
+  display: flex;
+  gap: 20px; 
+}
+
+.quizTypeButton {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #FFFFFF;
+  width: 100px;
+  font-weight: bolder;
+}
+
+.activeButton {
+  background-color: #60B84B;
+  color: #FFFFFF;
+}
+
+.dialogButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.cancelButton, .continueButton {
+  flex: 1;
+  font-weight: bolder;
+  padding: 0.75rem; 
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+.cancelButton {
+  background-color: #FFFFFF;
+  color: #474444;
+  border: 1px solid #ddd;
+  margin-right: 10px;
+}
+
+.cancelButton:hover {
+  background-color: #f7f7f7;
+}
+
+.continueButton {
+  background-color: #60B84B;
+  color: white;
+  border: none;
+}
+
+.continueButton:hover {
+  background-color: #4ea33d;
+}
