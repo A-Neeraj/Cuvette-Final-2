@@ -11,7 +11,8 @@ const Dashboard = () => {
   const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
   const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false);
   const [quizStats, setQuizStats] = useState({ quizzes: 0, questions: 0, impressions: 0 });
-  
+  const [currentQuizName, setCurrentQuizName] = useState(''); // Add state for quiz name
+
   useEffect(() => {
     updateStats();
   }, []);
@@ -35,9 +36,9 @@ const Dashboard = () => {
   };
 
   const handleContinueToQuestions = (quizName, quizType) => {
+    setCurrentQuizName(quizName); // Store the quiz name
     setShowCreateQuizDialog(false);
     setShowCreateQuestionsDialog(true);
-    // Pass quizName and quizType to CreateQuestionsDialog or use as needed
     console.log('Quiz Name:', quizName);
     console.log('Quiz Type:', quizType);
   };
@@ -84,7 +85,10 @@ const Dashboard = () => {
       )}
 
       {showCreateQuestionsDialog && (
-        <CreateQuestionsDialog onClose={handleCloseCreateQuestions} />
+        <CreateQuestionsDialog 
+          onClose={handleCloseCreateQuestions} 
+          quizName={currentQuizName} // Pass the current quiz name to CreateQuestionsDialog
+        />
       )}
     </div>
   );

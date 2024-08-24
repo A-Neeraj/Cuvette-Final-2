@@ -56,4 +56,3 @@ const CreateQuizDialog = ({ onClose, onContinue }) => {
 };
 
 export default CreateQuizDialog;
- 

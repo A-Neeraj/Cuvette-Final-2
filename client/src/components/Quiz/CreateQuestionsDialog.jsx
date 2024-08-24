@@ -3,7 +3,7 @@ import styles from './CreateQuestionsDialog.module.css';
 import { createQuiz } from '../../services/quizService'; // Import the createQuiz function
 import { FaTrash } from 'react-icons/fa';
 
-const CreateQuestionsDialog = ({ onClose }) => {
+const CreateQuestionsDialog = ({ onClose, quizName }) => { // Add quizName prop
   const [questions, setQuestions] = useState([{ text: '', options: [] }]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [optionType, setOptionType] = useState('Text');
@@ -59,7 +59,7 @@ const CreateQuestionsDialog = ({ onClose }) => {
     console.log('Timer:', timer);
     
     // Create the quiz and simulate a successful creation
-    const newQuiz = createQuiz('New Quiz', questions.length); // Create quiz with name 'New Quiz'
+    const newQuiz = createQuiz(quizName, questions.length); // Use the quizName passed from CreateQuizDialog
     console.log('New Quiz Created:', newQuiz);
     
     // Simulate quiz creation logic here
