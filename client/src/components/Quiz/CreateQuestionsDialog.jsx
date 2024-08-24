@@ -180,9 +180,7 @@ const CreateQuestionsDialog = ({ onClose }) => {
           </>
         ) : (
           <div className={styles.congratsDialog}>
-            <h2>Congrats!</h2>
-            <p>Your quiz has been created successfully.</p>
-            <p>Share the link with your participants:</p>
+            <h2>Congrats! your Quiz is Published!</h2>
             <input
               type="text"
               value={quizLink}
@@ -190,7 +188,7 @@ const CreateQuestionsDialog = ({ onClose }) => {
               className={styles.quizLinkInput}
             />
             <button className={styles.copyLinkButton} onClick={handleShareQuiz}>
-              Copy Link
+              Share
             </button>
             <button className={styles.closeCongratsButton} onClick={handleCloseCongrats}>
               Close

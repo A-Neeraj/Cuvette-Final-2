@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
 import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
-import { getQuizStats } from '../../services/quizService'; // New service for getting quiz stats
+import { getQuizStats } from '../../services/quizService'; // Service for getting quiz stats
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
   const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false);
   const [quizStats, setQuizStats] = useState({ quizzes: 0, questions: 0, impressions: 0 });
-
+  
   useEffect(() => {
     updateStats(); // Update stats when the dashboard is loaded
   }, []);

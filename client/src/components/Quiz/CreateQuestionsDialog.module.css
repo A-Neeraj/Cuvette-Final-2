@@ -202,3 +202,46 @@
 .createQuizButton:hover {
   background-color: #4ea33d;
 }
+
+.congratsDialog {
+  text-align: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #474444;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.quizLinkInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #474444;
+  font-weight: bolder;
+  font-size: 1rem;
+  background-color: #9F9F9F;
+  border: none;
+  border-radius: 10px;
+
+}
+
+.copyLinkButton, .closeCongratsButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.copyLinkButton {
+  background-color: #4caf50;
+  color: #fff;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: bolder;
+}
+
+.closeCongratsButton {
+  background-color: #f44336;
+  color: #fff;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: bolder;
+  margin-left: 20px;
+}
