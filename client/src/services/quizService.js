@@ -42,3 +42,12 @@ export const updateQuizImpressions = (quizId) => {
     localStorage.setItem('quizzes', JSON.stringify(quizzes)); // Update localStorage
   }
 };
+
+export const updateQuiz = (id, name, type) => {
+  let quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
+  quizzes = quizzes.map(quiz => 
+    quiz.id === id ? { ...quiz, name, type } : quiz
+  );
+  localStorage.setItem('quizzes', JSON.stringify(quizzes));
+};
+

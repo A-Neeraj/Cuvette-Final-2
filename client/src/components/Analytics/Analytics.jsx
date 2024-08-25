@@ -4,14 +4,16 @@ import { FaEdit, FaTrash, FaShareAlt } from 'react-icons/fa';
 import styles from './Analytics.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
 import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
-import { getQuizList, deleteQuiz } from '../../services/quizService';
+import EditQuizDialog from '../Quiz/EditQuizDialog'; // Import EditQuizDialog
+import { getQuizList, deleteQuiz, updateQuiz } from '../../services/quizService';
 
 const Analytics = () => {
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState([]);
   const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
   const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false);
-  const [currentQuizName, setCurrentQuizName] = useState(''); // State to store the current quiz name
+  const [showEditQuizDialog, setShowEditQuizDialog] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
 
   useEffect(() => {
     updateQuizList();
@@ -36,7 +38,6 @@ const Analytics = () => {
   };
 
   const handleContinueToQuestions = (quizName, quizType) => {
-    setCurrentQuizName(quizName); // Store the quiz name
     setShowCreateQuizDialog(false);
     setShowCreateQuestionsDialog(true);
     console.log('Continuing to the questions page with:', quizName, quizType);
@@ -68,6 +69,16 @@ const Analytics = () => {
 
   const cancelDelete = () => {
     setShowDialog(false);
+  };
+
+  const handleEditClick = (quiz) => {
+    setSelectedQuiz(quiz); // Set the selected quiz for editing
+    setShowEditQuizDialog(true); // Open the edit dialog
+  };
+
+  const handleCloseEditQuiz = () => {
+    setShowEditQuizDialog(false);
+    updateQuizList(); // Refresh the quiz list after editing
   };
 
   return (
@@ -113,7 +124,12 @@ const Analytics = () => {
                 <td>{quiz.createdOn}</td>
                 <td>{quiz.impressions}</td>
                 <td>
-                  <button className={`${styles.iconButton} ${styles.editButton}`}><FaEdit /></button>
+                  <button 
+                    className={`${styles.iconButton} ${styles.editButton}`} 
+                    onClick={() => handleEditClick(quiz)} // Open edit dialog with quiz data
+                  >
+                    <FaEdit />
+                  </button>
                   <button className={`${styles.iconButton} ${styles.deleteButton}`} onClick={() => handleDeleteClick(quiz.id)}><FaTrash /></button>
                   <button className={`${styles.iconButton} ${styles.shareButton}`} onClick={() => handleShareQuiz(quiz.link)}><FaShareAlt /></button>
                 </td>
@@ -143,9 +159,14 @@ const Analytics = () => {
         )}
 
         {showCreateQuestionsDialog && (
-          <CreateQuestionsDialog 
-            onClose={handleCloseCreateQuestions} // Handle closing the CreateQuestionsDialog
-            quizName={currentQuizName} // Pass the current quiz name to CreateQuestionsDialog
+          <CreateQuestionsDialog onClose={handleCloseCreateQuestions} />
+        )}
+
+        {showEditQuizDialog && (
+          <EditQuizDialog 
+            quiz={selectedQuiz} 
+            onClose={handleCloseEditQuiz} 
+            onUpdate={updateQuizList} // Refresh the quiz list after updating
           />
         )}
       </div>
