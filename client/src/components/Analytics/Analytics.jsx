@@ -4,8 +4,8 @@ import { FaEdit, FaTrash, FaShareAlt } from 'react-icons/fa';
 import styles from './Analytics.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
 import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
-import EditQuizDialog from '../Quiz/EditQuizDialog'; // Import EditQuizDialog
-import { getQuizList, deleteQuiz, updateQuiz } from '../../services/quizService';
+import EditQuizDialog from '../Quiz/EditQuizDialog'; 
+import { getQuizList, deleteQuiz } from '../../services/quizService';
 
 const Analytics = () => {
   const navigate = useNavigate();
@@ -15,14 +15,15 @@ const Analytics = () => {
   const [showEditQuizDialog, setShowEditQuizDialog] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
 
+  const updateQuizList = async () => {
+    const quizzes = await getQuizList();
+    console.log('Updating quiz list:', quizzes);
+    setQuizData(quizzes);
+  };
+
   useEffect(() => {
     updateQuizList();
   }, []);
-
-  const updateQuizList = () => {
-    const quizzes = getQuizList(); // Fetch the latest quizzes list
-    setQuizData(quizzes); // Update the quizData state
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
@@ -38,14 +39,26 @@ const Analytics = () => {
   };
 
   const handleContinueToQuestions = (quizName, quizType) => {
+    const newQuiz = {
+      id: quizData.length + 1,  
+      name: quizName,
+      type: quizType,
+      createdOn: new Date().toLocaleDateString(),  
+      impressions: 0,  
+      link: `quiz/${quizData.length + 1}`  
+    };
+
+    // Add the new quiz to state and update the list
+    const updatedQuizData = [...quizData, newQuiz];
+    setQuizData(updatedQuizData);
+
     setShowCreateQuizDialog(false);
     setShowCreateQuestionsDialog(true);
-    console.log('Continuing to the questions page with:', quizName, quizType);
   };
 
   const handleCloseCreateQuestions = () => {
     setShowCreateQuestionsDialog(false);
-    updateQuizList(); // Refresh the quiz list after creating questions
+    updateQuizList(); 
   };
 
   const handleShareQuiz = (quizLink) => {
@@ -61,9 +74,9 @@ const Analytics = () => {
     setShowDialog(true);
   };
 
-  const confirmDelete = () => {
-    deleteQuiz(selectedQuizId); // Delete quiz from localStorage
-    updateQuizList(); // Update the quiz list after deletion
+  const confirmDelete = async () => {
+    await deleteQuiz(selectedQuizId); 
+    updateQuizList(); 
     setShowDialog(false);
   };
 
@@ -72,13 +85,17 @@ const Analytics = () => {
   };
 
   const handleEditClick = (quiz) => {
-    setSelectedQuiz(quiz); // Set the selected quiz for editing
-    setShowEditQuizDialog(true); // Open the edit dialog
+    setSelectedQuiz(quiz);
+    setShowEditQuizDialog(true);
   };
 
-  const handleCloseEditQuiz = () => {
+  const handleCloseEditQuiz = (updatedQuiz) => {
+    if (updatedQuiz) {
+      // Update the quiz data and refresh the list
+      const updatedQuizzes = quizData.map(q => q.id === updatedQuiz.id ? updatedQuiz : q);
+      setQuizData(updatedQuizzes);
+    }
     setShowEditQuizDialog(false);
-    updateQuizList(); // Refresh the quiz list after editing
   };
 
   return (
@@ -126,7 +143,7 @@ const Analytics = () => {
                 <td>
                   <button 
                     className={`${styles.iconButton} ${styles.editButton}`} 
-                    onClick={() => handleEditClick(quiz)} // Open edit dialog with quiz data
+                    onClick={() => handleEditClick(quiz)} 
                   >
                     <FaEdit />
                   </button>
@@ -154,19 +171,21 @@ const Analytics = () => {
         {showCreateQuizDialog && (
           <CreateQuizDialog 
             onClose={handleCloseCreateQuiz} 
-            onContinue={handleContinueToQuestions} // Pass the quizName and quizType
+            onContinue={handleContinueToQuestions} 
           />
         )}
 
         {showCreateQuestionsDialog && (
-          <CreateQuestionsDialog onClose={handleCloseCreateQuestions} />
+          <CreateQuestionsDialog 
+            onClose={handleCloseCreateQuestions} 
+            quizName={selectedQuiz ? selectedQuiz.name : ''} 
+          />
         )}
 
         {showEditQuizDialog && (
           <EditQuizDialog 
             quiz={selectedQuiz} 
             onClose={handleCloseEditQuiz} 
-            onUpdate={updateQuizList} // Refresh the quiz list after updating
           />
         )}
       </div>

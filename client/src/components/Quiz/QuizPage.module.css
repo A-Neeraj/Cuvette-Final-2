@@ -1,0 +1,94 @@
+/* Container for the quiz content */
+.quizContainer {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Header styling for question number and timer */
+.quizHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Styling for the question number */
+.questionNumber {
+  font-size: 16px;
+  color: #333333;
+}
+
+/* Styling for the timer */
+.timer {
+  font-size: 16px;
+  color: #333333;
+}
+
+/* Styling for the question text */
+.questionText {
+  font-size: 24px;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+/* Layout for the options */
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* Styling for each option button */
+.optionButton {
+  background-color: #F0F0F0;
+  border: 2px solid transparent; /* Default border */
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.optionButton:hover {
+  background-color: #E0E0E0;
+}
+
+/* Styling for selected option button */
+.selectedOption {
+  border-color: #5076FF;
+}
+
+.nextButton{
+  background-color: #60B84B;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+/* Styling for the submit button */
+.submitButton {
+  background-color: #60B84B;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #4A9C39;
+}

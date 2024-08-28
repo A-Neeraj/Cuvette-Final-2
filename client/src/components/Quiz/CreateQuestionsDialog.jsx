@@ -3,8 +3,8 @@ import styles from './CreateQuestionsDialog.module.css';
 import { createQuiz } from '../../services/quizService'; // Import the createQuiz function
 import { FaTrash } from 'react-icons/fa';
 
-const CreateQuestionsDialog = ({ onClose, quizName }) => { // Add quizName prop
-  const [questions, setQuestions] = useState([{ text: '', options: [] }]);
+const CreateQuestionsDialog = ({ onClose, quizName }) => {
+  const [questions, setQuestions] = useState([{ text: '', options: [], correctOption: null }]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [optionType, setOptionType] = useState('Text');
   const [timer, setTimer] = useState('OFF');
@@ -14,7 +14,7 @@ const CreateQuestionsDialog = ({ onClose, quizName }) => { // Add quizName prop
 
   const handleAddQuestion = () => {
     if (questions.length < maxQuestions) {
-      setQuestions([...questions, { text: '', options: [] }]);
+      setQuestions([...questions, { text: '', options: [], correctOption: null }]);
       setSelectedQuestionIndex(questions.length);
     }
   };
@@ -43,7 +43,7 @@ const CreateQuestionsDialog = ({ onClose, quizName }) => { // Add quizName prop
     setQuestions(updatedQuestions);
   };
 
-  const handleCorrectOptionClick = (index) => {
+  const handleOptionClick = (index) => {
     const updatedQuestions = [...questions];
     updatedQuestions[selectedQuestionIndex].correctOption = index;
     setQuestions(updatedQuestions);
@@ -54,15 +54,20 @@ const CreateQuestionsDialog = ({ onClose, quizName }) => { // Add quizName prop
   };
 
   const handleCreateQuiz = () => {
+    // Validate that at least one correct option is selected for each question
+    const hasValidQuestions = questions.every(q => q.correctOption !== null);
+    if (!hasValidQuestions) {
+      alert('Please mark a correct option for each question.');
+      return;
+    }
+
     // Handle quiz creation logic
     console.log('Questions:', questions);
     console.log('Timer:', timer);
-    
-    // Create the quiz and simulate a successful creation
-    const newQuiz = createQuiz(quizName, questions.length); // Use the quizName passed from CreateQuizDialog
+  
+    const newQuiz = createQuiz(quizName, questions); // Pass the questions array
     console.log('New Quiz Created:', newQuiz);
-    
-    // Simulate quiz creation logic here
+  
     const newQuizLink = newQuiz.link; // Example link
     setQuizLink(newQuizLink);
     setShowCongratsDialog(true);
@@ -136,7 +141,7 @@ const CreateQuestionsDialog = ({ onClose, quizName }) => { // Add quizName prop
                       value={option}
                       onChange={(e) => handleOptionChange(index, e.target.value)}
                       className={`${styles.optionInput} ${questions[selectedQuestionIndex].correctOption === index ? styles.correctOption : ''}`}
-                      onClick={() => handleCorrectOptionClick(index)}
+                      onClick={() => handleOptionClick(index)}
                     />
                     <FaTrash className={styles.deleteIcon} onClick={() => handleDeleteOption(index)} />
                   </div>

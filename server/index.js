@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use('/api/auth', userRoutes);  // Updated path to match your frontend API calls
+app.use('/api/auth', userRoutes);
 app.use('/api/quizzes', quizRoutes);
 
 // MongoDB Connection

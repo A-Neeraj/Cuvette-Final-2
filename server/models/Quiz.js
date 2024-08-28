@@ -1,24 +1,26 @@
+// server/models/Quiz.js
 const mongoose = require('mongoose');
 
+// Option Schema for questions
 const optionSchema = new mongoose.Schema({
   text: { type: String },
   imageUrl: { type: String },
   isCorrect: { type: Boolean, default: false },
 });
 
+// Question Schema
 const questionSchema = new mongoose.Schema({
   questionText: { type: String, required: true },
   options: [optionSchema],
   timer: { type: Number, default: 0 },
 });
 
+// Quiz Schema
 const quizSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  type: { type: String, enum: ['Q&A', 'Poll'], required: true },
-  questions: [questionSchema],
+  questions: [questionSchema], // Use questionSchema for questions
+  createdOn: { type: Date, default: Date.now },
   impressions: { type: Number, default: 0 },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Quiz', quizSchema);

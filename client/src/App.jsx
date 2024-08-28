@@ -5,6 +5,7 @@ import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
 import styles from "./App.module.css";
 import Analytics from "./components/Analytics/Analytics";
+import QuizPage from "./components/Quiz/QuizPage";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/quiz/:quizId" element={<QuizPage />} />
         </Routes>
       </Router>
     </div>

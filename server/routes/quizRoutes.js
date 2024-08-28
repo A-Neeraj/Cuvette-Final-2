@@ -1,21 +1,15 @@
+// server/routes/quizRoutes.js
 const express = require('express');
-const { createQuiz, getQuizById, updateQuiz, deleteQuiz, getQuizAnalytics } = require('../controllers/quizController');
-const { protect } = require('../middlewares/authMiddleware');
 const router = express.Router();
+const quizController = require('../controllers/quizController');
 
-// Create Quiz
-router.post('/', protect, createQuiz);
+// Route to create a quiz
+router.post('/', quizController.createQuiz);
 
-// Get a specific quiz (increments impressions)
-router.get('/:id', getQuizById);
+// Route to get a specific quiz by ID
+router.get('/:id', quizController.getQuizById);
 
-// Update Quiz
-router.put('/:id', protect, updateQuiz);
-
-// Delete Quiz
-router.delete('/:id', protect, deleteQuiz);
-
-// Quiz Analytics
-router.get('/analytics', protect, getQuizAnalytics);
+// Route to get all quizzes (optional)
+router.get('/', quizController.getAllQuizzes);
 
 module.exports = router;

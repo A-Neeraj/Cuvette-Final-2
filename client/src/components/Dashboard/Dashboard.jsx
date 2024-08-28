@@ -13,15 +13,18 @@ const Dashboard = () => {
   const [quizStats, setQuizStats] = useState({ quizzes: 0, questions: 0, impressions: 0 });
   const [currentQuizName, setCurrentQuizName] = useState(''); // Add state for quiz name
 
+  const updateStats = async () => {
+    const stats = getQuizStats(); // Assuming this returns the correct stats synchronously
+    if (stats) {
+      setQuizStats(stats);
+    } else {
+      console.error('Failed to update quiz stats');
+    }
+  };
+
   useEffect(() => {
     updateStats();
   }, []);
-
-  const updateStats = () => {
-    const stats = getQuizStats();
-    setQuizStats(stats);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     navigate('/');
@@ -76,7 +79,7 @@ const Dashboard = () => {
           {/* Map through trending quizzes and display */}
         </div>
       </div>
-      
+
       {showCreateQuizDialog && (
         <CreateQuizDialog 
           onClose={handleCloseCreateQuiz} 

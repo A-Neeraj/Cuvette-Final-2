@@ -1,26 +1,29 @@
-let quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
-let questions = quizzes.reduce((total, quiz) => total + quiz.questions, 0);
+import { v4 as uuidv4 } from 'uuid';
 
-export const createQuiz = (quizName, questionCount) => {
+let quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
+let totalQuestions = quizzes.reduce((total, quiz) => total + quiz.questions.length, 0);
+
+export const createQuiz = (quizName, questions) => {
+  const quizId = uuidv4();
   const newQuiz = {
-    id: quizzes.length + 1,
-    name: quizName, // Correctly set the quiz name
+    id: quizId,
+    name: quizName,
     createdOn: new Date().toISOString().split('T')[0],
     impressions: 0,
-    questions: questionCount,
-    link: `https://quizlink.com/quiz${quizzes.length + 1}`
+    questions: questions, // Use the questions provided
+    link: `http://localhost:5173/quiz/${quizId}`
   };
 
   quizzes.push(newQuiz);
-  questions += questionCount;
-  localStorage.setItem('quizzes', JSON.stringify(quizzes)); // Save to localStorage
+  totalQuestions += questions.length; // Update the total question count
+  localStorage.setItem('quizzes', JSON.stringify(quizzes));
   return newQuiz;
 };
 
 export const getQuizStats = () => {
   return {
     quizzes: quizzes.length,
-    questions: questions,
+    questions: totalQuestions,
     impressions: quizzes.reduce((total, quiz) => total + quiz.impressions, 0)
   };
 };
@@ -29,25 +32,30 @@ export const getQuizList = () => {
   return quizzes;
 };
 
+export const getQuizById = (quizId) => {
+  return quizzes.find(q => q.id === quizId);
+};
+
 export const deleteQuiz = (quizId) => {
   quizzes = quizzes.filter(q => q.id !== quizId);
-  questions = quizzes.reduce((total, quiz) => total + quiz.questions, 0);
-  localStorage.setItem('quizzes', JSON.stringify(quizzes)); // Update localStorage
+  totalQuestions = quizzes.reduce((total, quiz) => total + quiz.questions.length, 0); // Update the total question count
+  localStorage.setItem('quizzes', JSON.stringify(quizzes));
 };
 
 export const updateQuizImpressions = (quizId) => {
   const quiz = quizzes.find(q => q.id === quizId);
   if (quiz) {
     quiz.impressions += 1;
-    localStorage.setItem('quizzes', JSON.stringify(quizzes)); // Update localStorage
+    localStorage.setItem('quizzes', JSON.stringify(quizzes));
+  } else {
+    console.error('Quiz not found for ID:', quizId);
   }
 };
 
-export const updateQuiz = (id, name, type) => {
-  let quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
-  quizzes = quizzes.map(quiz => 
-    quiz.id === id ? { ...quiz, name, type } : quiz
+export const updateQuiz = (id, name, questions) => {
+  quizzes = quizzes.map(quiz =>
+    quiz.id === id ? { ...quiz, name, questions } : quiz
   );
+  totalQuestions = quizzes.reduce((total, quiz) => total + quiz.questions.length, 0); // Update the total question count
   localStorage.setItem('quizzes', JSON.stringify(quizzes));
 };
-

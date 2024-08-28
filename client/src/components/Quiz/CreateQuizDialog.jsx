@@ -1,3 +1,5 @@
+// CreateQuizDialog.jsx
+
 import React, { useState } from 'react';
 import styles from './CreateQuizDialog.module.css';
 
@@ -9,13 +11,31 @@ const CreateQuizDialog = ({ onClose, onContinue }) => {
     setQuizType(type);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (quizName && quizType) {
-      onContinue(quizName, quizType); // Pass quizName and quizType to onContinue
+      try {
+        const createdQuiz = await onContinue(quizName, quizType); // Ensure this is an async function
+  
+        if (createdQuiz && createdQuiz.link) {
+          const quizLink = createdQuiz.link;
+          await navigator.clipboard.writeText(quizLink); // Copy the link to clipboard
+          alert('Quiz link copied to clipboard: ' + quizLink);
+  
+          // Reset input fields
+          setQuizName('');
+          setQuizType('');
+        } else {
+          // alert('Failed to create the quiz or link is undefined.');
+        }
+      } catch (error) {
+        console.error('Error during quiz creation:', error);
+        alert('An error occurred while creating the quiz.');
+      }
     } else {
-      alert("Please enter a quiz name and select a quiz type.");
+      alert('Please enter a quiz name and select a quiz type.');
     }
   };
+  
 
   return (
     <div className={styles.dialogOverlay}>

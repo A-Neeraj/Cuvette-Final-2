@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './EditQuizDialog.module.css';
 import { updateQuiz } from '../../services/quizService'; // Import the updateQuiz function
 
-const EditQuizDialog = ({ quiz, onClose, onUpdate }) => {
+const EditQuizDialog = ({ quiz, onClose }) => {
   const [quizName, setQuizName] = useState('');
   const [quizType, setQuizType] = useState('');
 
@@ -20,8 +20,8 @@ const EditQuizDialog = ({ quiz, onClose, onUpdate }) => {
   const handleUpdate = () => {
     if (quizName && quizType) {
       updateQuiz(quiz.id, quizName, quizType); // Update quiz details
-      onUpdate(); // Notify parent to refresh quiz list
-      onClose(); // Close the dialog
+      const updatedQuiz = { ...quiz, name: quizName, type: quizType };
+      onClose(updatedQuiz); // Pass updated quiz to Analytics
     } else {
       alert("Please enter a quiz name and select a quiz type.");
     }
@@ -57,8 +57,8 @@ const EditQuizDialog = ({ quiz, onClose, onUpdate }) => {
         </div>
 
         <div className={styles.dialogButtons}>
-          <button className={styles.cancelButton} onClick={onClose}>Cancel</button>
-          <button className={styles.continueButton} onClick={handleUpdate}>Continue</button>
+          <button className={styles.cancelButton} onClick={() => onClose(null)}>Cancel</button>
+          <button className={styles.continueButton} onClick={handleUpdate}>Save</button>
         </div>
       </div>
     </div>
