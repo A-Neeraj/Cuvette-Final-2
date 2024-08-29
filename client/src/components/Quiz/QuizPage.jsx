@@ -1,30 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { getQuizById, updateQuizImpressions } from '../../services/quizService'; 
-import styles from './QuizPage.module.css'; 
-import trophyImage from './trophy.png';
-
+import { getQuizById, updateQuizImpressions } from '../../services/quizService';
+import styles from './QuizPage.module.css';
+import trophyImage from './trophy.png'; // Assuming trophy.png is in the same directory as QuizPage.jsx
 
 const QuizPage = () => {
-  const { quizId } = useParams(); 
+  const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [selectedOption, setSelectedOption] = useState(null); 
+  const [selectedOption, setSelectedOption] = useState(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [timer, setTimer] = useState(null); 
+  const [timer, setTimer] = useState(null);
   const [score, setScore] = useState(null);
+  const impressionsUpdated = useRef(false); // useRef to track if impressions have been updated
 
   useEffect(() => {
     const fetchedQuiz = getQuizById(quizId);
     console.log('Fetched Quiz:', fetchedQuiz);
     if (fetchedQuiz) {
       setQuiz(fetchedQuiz);
-  
+
       // Ensure this is called only once
-      console.log('Updating impressions for quiz:', quizId);
-      updateQuizImpressions(quizId);
-  
+      if (!impressionsUpdated.current) {
+        console.log('Updating impressions for quiz:', quizId);
+        updateQuizImpressions(quizId);
+        impressionsUpdated.current = true; // Set the ref to true to prevent further updates
+      }
+
       // Set up timer if enabled
       if (fetchedQuiz.timer === '5sec') {
         setTimer(5);
@@ -34,7 +37,7 @@ const QuizPage = () => {
     } else {
       console.error('Quiz not found or invalid quizId:', quizId);
     }
-  }, [quizId]);
+  }, [quizId]); // Keep dependency array as quizId
 
   useEffect(() => {
     // Timer countdown logic
@@ -48,7 +51,7 @@ const QuizPage = () => {
       clearInterval(interval);
     }
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [timer]);
 
   const handleAnswer = (option) => {
@@ -84,61 +87,64 @@ const QuizPage = () => {
 
   // Check if questions and options are available
   const currentQuestion = quiz.questions[currentQuestionIndex];
-  console.log('Current Question:', currentQuestion); 
+  console.log('Current Question:', currentQuestion);
   if (!currentQuestion) return <div>Loading Question...</div>;
 
   return (
-    <div className={styles.quizContainer}>
-      {!quizCompleted ? (
-        <>
-          <div className={styles.quizHeader}>
-            <span className={styles.questionNumber}>{`${currentQuestionIndex + 1}/${quiz.questions.length}`}</span>
-            {quiz.timer && (
-              <span className={styles.timer}>
-                {Math.floor(timer / 60).toString().padStart(2, '0')}:{(timer % 60).toString().padStart(2, '0')}
-              </span>
-            )}
-          </div>
-          <h2 className={styles.questionText}>{currentQuestion.text}</h2>
-          <div className={styles.options}>
-            {currentQuestion.options.map((option, index) => (
+    <div className={styles.quizOuterContainer}>
+      <div className={styles.quizContainer}>
+        {!quizCompleted ? (
+          <>
+            <div className={styles.quizHeader}>
+              <span className={styles.questionNumber}>{`${currentQuestionIndex + 1}/${quiz.questions.length}`}</span>
+              {quiz.timer && (
+                <span className={styles.timer}>
+                  {Math.floor(timer / 60).toString().padStart(2, '0')}:{(timer % 60).toString().padStart(2, '0')}
+                </span>
+              )}
+            </div>
+            <h2 className={styles.questionText}>{currentQuestion.text}</h2>
+            <div className={styles.options}>
+              {currentQuestion.options.map((option, index) => (
+                <button 
+                  key={index} 
+                  className={`${styles.optionButton} ${selectedOption === option ? styles.selectedOption : ''}`} 
+                  onClick={() => handleAnswer(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+            {currentQuestionIndex < quiz.questions.length - 1 && (
               <button 
-                key={index} 
-                className={`${styles.optionButton} ${selectedOption === option ? styles.selectedOption : ''}`} 
-                onClick={() => handleAnswer(option)}
+                className={styles.nextButton} 
+                onClick={handleNext}
               >
-                {option}
+                Next
               </button>
-            ))}
+            )}
+            {currentQuestionIndex === quiz.questions.length - 1 && (
+              <button 
+                className={styles.submitButton} 
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
+            )}
+          </>
+        ) : (
+          <div className={styles.resultsContainer}>
+            <h1 className={styles.resultsHeading}>Congrats! Quiz is completed</h1>
+            <img src={trophyImage} alt="Trophy" className={styles.trophyImage} />
+            <h2 className={styles.score}>
+              Your Score is <span className={styles.scoreHighlight}>{score}/{quiz.questions.length}</span>
+            </h2>
           </div>
-          {currentQuestionIndex < quiz.questions.length - 1 && (
-            <button 
-              className={styles.nextButton} 
-              onClick={handleNext}
-            >
-              Next
-            </button>
-          )}
-          {currentQuestionIndex === quiz.questions.length - 1 && (
-            <button 
-              className={styles.submitButton} 
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-          )}
-        </>
-      ) : (
-        <div className={styles.resultsContainer}>
-          <h1 className={styles.resultsHeading}>Congrats! Quiz is completed</h1>
-          <img src={trophyImage} alt="Trophy" className={styles.trophyImage} />
-          <h2 className={styles.score}>
-            Your Score is <span className={styles.scoreHighlight}>{score}/{quiz.questions.length}</span>
-          </h2>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
+  
 };
 
 export default QuizPage;

@@ -59,3 +59,9 @@ export const updateQuiz = (id, name, questions) => {
   totalQuestions = quizzes.reduce((total, quiz) => total + quiz.questions.length, 0); // Update the total question count
   localStorage.setItem('quizzes', JSON.stringify(quizzes));
 };
+
+// New function to fetch trending quizzes
+export const getTrendingQuizzes = () => {
+  // Sort quizzes by impressions in descending order
+  return quizzes.sort((a, b) => b.impressions - a.impressions);
+};

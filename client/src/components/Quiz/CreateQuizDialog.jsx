@@ -1,5 +1,3 @@
-// CreateQuizDialog.jsx
-
 import React, { useState } from 'react';
 import styles from './CreateQuizDialog.module.css';
 
@@ -14,14 +12,13 @@ const CreateQuizDialog = ({ onClose, onContinue }) => {
   const handleContinue = async () => {
     if (quizName && quizType) {
       try {
-        const createdQuiz = await onContinue(quizName, quizType); // Ensure this is an async function
+        const createdQuiz = await onContinue(quizName, quizType); 
   
         if (createdQuiz && createdQuiz.link) {
           const quizLink = createdQuiz.link;
-          await navigator.clipboard.writeText(quizLink); // Copy the link to clipboard
+          await navigator.clipboard.writeText(quizLink); 
           alert('Quiz link copied to clipboard: ' + quizLink);
   
-          // Reset input fields
           setQuizName('');
           setQuizType('');
         } else {
@@ -35,7 +32,6 @@ const CreateQuizDialog = ({ onClose, onContinue }) => {
       alert('Please enter a quiz name and select a quiz type.');
     }
   };
-  
 
   return (
     <div className={styles.dialogOverlay}>
@@ -66,7 +62,7 @@ const CreateQuizDialog = ({ onClose, onContinue }) => {
           </div>
         </div>
 
-        <div className={styles.dialogButtons}>
+        <div className={styles.buttons}>
           <button className={styles.cancelButton} onClick={onClose}>Cancel</button>
           <button className={styles.continueButton} onClick={handleContinue}>Continue</button>
         </div>

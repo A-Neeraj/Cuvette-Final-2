@@ -1,54 +1,60 @@
-/* Container for the quiz content */
+.quizOuterContainer {
+  background-color: #041325;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  margin: 0; 
+  padding: 20px; /* Added padding for smaller screens */
+}
+
 .quizContainer {
   background-color: #FFFFFF;
   border-radius: 8px;
   padding: 20px;
-  margin: 20px auto;
-  max-width: 600px;
+  margin: 20px; 
+  width: 100%; /* Use full width by default */
+  max-width: 600px; /* Limit max width to 600px */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
-/* Header styling for question number and timer */
 .quizHeader {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-/* Styling for the question number */
 .questionNumber {
   font-size: 16px;
   color: #333333;
 }
 
-/* Styling for the timer */
 .timer {
   font-size: 16px;
   color: #333333;
 }
 
-/* Styling for the question text */
 .questionText {
   font-size: 24px;
   color: #333333;
   margin-bottom: 20px;
+  text-align: center; /* Center align text */
 }
 
-/* Layout for the options */
 .options {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 20px; /* Reduced gap for smaller screens */
 }
 
-/* Styling for each option button */
 .optionButton {
   background-color: #F0F0F0;
-  border: 2px solid transparent; /* Default border */
+  border: 2px solid transparent; 
   border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
+  padding: 15px; /* Adjusted padding for better fit on smaller screens */
+  font-size: 16px; /* Adjusted font size */
+  font-weight: bolder;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
 }
@@ -57,38 +63,92 @@
   background-color: #E0E0E0;
 }
 
-/* Styling for selected option button */
 .selectedOption {
   border-color: #5076FF;
 }
 
-.nextButton{
+.nextButton, .submitButton {
   background-color: #60B84B;
   border: none;
   border-radius: 4px;
   padding: 10px;
   font-size: 16px;
+  font-weight: bold;
   color: #FFFFFF;
   cursor: pointer;
   margin-top: 20px;
-  width: 100%;
+  width: 100%; /* Use full width */
+  max-width: 300px; /* Limit max width */
   transition: background-color 0.3s;
-}
-
-/* Styling for the submit button */
-.submitButton {
-  background-color: #60B84B;
-  border: none;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  color: #FFFFFF;
-  cursor: pointer;
-  margin-top: 20px;
-  width: 100%;
-  transition: background-color 0.3s;
+  align-self: center; /* Center align the button */
 }
 
 .submitButton:hover {
   background-color: #4A9C39;
+}
+
+.resultsContainer {
+  text-align: center; /* Center align the results */
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #474444;
+  font-weight: bold;
+}
+
+.scoreHighlight {
+  color: #60B84B;
+}
+
+.trophyImage {
+  max-width: 100%; /* Ensure the image is responsive */
+  height: auto; /* Maintain aspect ratio */
+  margin: 20px 0; /* Space around the image */
+}
+
+/* Media Queries for Responsiveness */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+  .quizContainer {
+    padding: 15px;
+    width: 100%;
+  }
+
+  .questionText {
+    font-size: 20px;
+  }
+
+  .optionButton {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .nextButton, .submitButton {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .options {
+    grid-template-columns: 1fr; /* Stack options vertically on small screens */
+    gap: 10px;
+  }
+}
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 400px) {
+  .quizContainer {
+    padding: 10px;
+  }
+
+  .questionText {
+    font-size: 18px;
+  }
+
+  .optionButton {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .nextButton, .submitButton {
+    font-size: 12px;
+  }
 }

@@ -3,18 +3,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import CreateQuizDialog from '../Quiz/CreateQuizDialog';
 import CreateQuestionsDialog from '../Quiz/CreateQuestionsDialog';
-import { getQuizStats } from '../../services/quizService';
+import { getQuizStats, getTrendingQuizzes } from '../../services/quizService'; // Ensure getTrendingQuizzes is available
+import eyeIcon from './eye-icon.png';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-
   const [showCreateQuizDialog, setShowCreateQuizDialog] = useState(false);
   const [showCreateQuestionsDialog, setShowCreateQuestionsDialog] = useState(false);
   const [quizStats, setQuizStats] = useState({ quizzes: 0, questions: 0, impressions: 0 });
-  const [currentQuizName, setCurrentQuizName] = useState(''); // Add state for quiz name
+  const [currentQuizName, setCurrentQuizName] = useState('');
+  const [trendingQuizzes, setTrendingQuizzes] = useState([]);
 
   const updateStats = async () => {
-    const stats = getQuizStats(); // Assuming this returns the correct stats synchronously
+    const stats = await getQuizStats(); // Ensure this is an async function
     if (stats) {
       setQuizStats(stats);
     } else {
@@ -22,9 +23,20 @@ const Dashboard = () => {
     }
   };
 
+  const fetchTrendingQuizzes = async () => {
+    const quizzes = await getTrendingQuizzes(); // Fetch trending quizzes
+    if (quizzes) {
+      setTrendingQuizzes(quizzes.sort((a, b) => b.impressions - a.impressions)); // Sort by impressions
+    } else {
+      console.error('Failed to fetch trending quizzes');
+    }
+  };
+
   useEffect(() => {
     updateStats();
+    fetchTrendingQuizzes(); // Fetch trending quizzes on component mount
   }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     navigate('/');
@@ -39,7 +51,7 @@ const Dashboard = () => {
   };
 
   const handleContinueToQuestions = (quizName, quizType) => {
-    setCurrentQuizName(quizName); // Store the quiz name
+    setCurrentQuizName(quizName);
     setShowCreateQuizDialog(false);
     setShowCreateQuestionsDialog(true);
     console.log('Quiz Name:', quizName);
@@ -49,6 +61,7 @@ const Dashboard = () => {
   const handleCloseCreateQuestions = () => {
     setShowCreateQuestionsDialog(false);
     updateStats();
+    fetchTrendingQuizzes(); // Refresh trending quizzes after closing CreateQuestionsDialog
   };
 
   return (
@@ -70,27 +83,40 @@ const Dashboard = () => {
       </div>
       <div className={styles.mainContent}>
         <div className={styles.cardsContainer}>
-          <div className={`${styles.card} ${styles.quizzesCard}`}>{quizStats.quizzes} Quizzes Created</div>
-          <div className={`${styles.card} ${styles.questionsCard}`}>{quizStats.questions} Questions Created</div>
-          <div className={`${styles.card} ${styles.impressionsCard}`}>{quizStats.impressions} Total Impressions</div>
+          <div className={`${styles.card} ${styles.quizzesCard}`}><b style={{fontSize: "3rem"}}>{quizStats.quizzes}</b> Quizzes Created</div>
+          <div className={`${styles.card} ${styles.questionsCard}`}><b style={{fontSize: "3rem"}}>{quizStats.questions}</b> Questions Created</div>
+          <div className={`${styles.card} ${styles.impressionsCard}`}><b style={{fontSize: "3rem"}}>{quizStats.impressions}</b> Total Impressions</div>
         </div>
         <h3 className={styles.trendingHeading}>Trending Quizzes</h3>
         <div className={styles.trendingQuizzes}>
-          {/* Map through trending quizzes and display */}
+          {trendingQuizzes.map((quiz) => (
+            <div key={quiz.id} className={styles.trendingCard}>
+              <div className={styles.cardContent}>
+                <div className={styles.quizHeader}>
+                  <h4 className={styles.quizName}>{quiz.name}</h4>
+                  <div className={styles.impressions}>
+                    <span className={styles.impressionsCount}>{quiz.impressions}</span>
+                    <img src={eyeIcon} alt="EyeIcon" />
+                  </div>
+                </div>
+                <p className={styles.createdDate}>Created on: {quiz.createdOn}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
       {showCreateQuizDialog && (
         <CreateQuizDialog 
           onClose={handleCloseCreateQuiz} 
-          onContinue={handleContinueToQuestions} // Pass quizName and quizType
+          onContinue={handleContinueToQuestions} 
         />
       )}
 
       {showCreateQuestionsDialog && (
         <CreateQuestionsDialog 
           onClose={handleCloseCreateQuestions} 
-          quizName={currentQuizName} // Pass the current quiz name to CreateQuestionsDialog
+          quizName={currentQuizName} 
         />
       )}
     </div>

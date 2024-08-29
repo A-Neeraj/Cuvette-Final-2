@@ -48,12 +48,13 @@ const Analytics = () => {
       link: `quiz/${quizData.length + 1}`  
     };
 
-    // Add the new quiz to state and update the list
     const updatedQuizData = [...quizData, newQuiz];
     setQuizData(updatedQuizData);
 
     setShowCreateQuizDialog(false);
     setShowCreateQuestionsDialog(true);
+
+    setSelectedQuiz(newQuiz);
   };
 
   const handleCloseCreateQuestions = () => {
@@ -91,7 +92,6 @@ const Analytics = () => {
 
   const handleCloseEditQuiz = (updatedQuiz) => {
     if (updatedQuiz) {
-      // Update the quiz data and refresh the list
       const updatedQuizzes = quizData.map(q => q.id === updatedQuiz.id ? updatedQuiz : q);
       setQuizData(updatedQuizzes);
     }

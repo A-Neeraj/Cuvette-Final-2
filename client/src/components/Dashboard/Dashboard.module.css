@@ -90,7 +90,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   flex-grow: 1;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -108,10 +108,70 @@
 
 .trendingHeading {
   color: #474444;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
+  margin-top: 5rem;
+  font-size: 40px;
 }
 
 .trendingQuizzes {
   display: flex;
   gap: 1.5rem;
+}
+
+.trendingQuizzes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.trendingCard {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 250px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.createdDate {
+  font-size: 16px;
+  color: #60B84B;
+  margin-bottom: 8px;
+}
+
+.quizHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.quizName {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.impressions {
+  display: flex;
+  align-items: center;
+}
+
+.impressionsCount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #FF5D01;
+  margin-right: 4px;
+}
+
+.eyeIcon {
+  width: 16px;
+  height: 16px;
 }
